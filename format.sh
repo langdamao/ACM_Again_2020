@@ -1,11 +1,14 @@
 tmpFile="tmp"
 git add .
-git diff --name-only > $tmpFile 
-cmt="add :"
+git status --porcelain | sed s/^...// > $tmpFile 
+cmt="add "
 while read fileName 
 do 
-	#clang-format -i --style=file $fileName 
 	echo "ADD FILE: "$fileName
+	if [[ $fileName == *.cc ]]; then
+	    echo "FORMAT FILE: "$fileName
+	    clang-format -i --style=file $fileName 
+	fi	
 	cmt=${cmt}":"${fileName/\/main.cc/} 
 done < $tmpFile 
 git status 
