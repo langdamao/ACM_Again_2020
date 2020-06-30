@@ -5,4 +5,5 @@ test/*
 **/.swp 
 **/.swo 
 **/*.json
+leetcode/leetcode/editor/cn/doc/*.md
 tmp
