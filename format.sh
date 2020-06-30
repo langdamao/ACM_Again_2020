@@ -5,7 +5,7 @@ cmt="add "
 while read fileName 
 do 
 	echo "ADD FILE: "$fileName
-	if [[ $fileName == *.cc ]]; then
+	if [[ $fileName == *.cc ]] || [[ $fileName == *.cpp ]]; then
 	    echo "FORMAT FILE: "$fileName
 	    clang-format -i --style=file $fileName 
 	fi	

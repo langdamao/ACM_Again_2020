@@ -4,4 +4,5 @@ test/*
 **/.DS_Store 
 **/.swp 
 **/.swo 
+**/*.json
 tmp
