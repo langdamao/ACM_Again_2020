@@ -1,0 +1,55 @@
+class Solution {
+public:
+    inline long long abs(int x){
+      if (x>0) return (long long )x;
+      return (long long)-x;
+    }
+    struct node{
+      node(int _h,int _x):h(_h),x(_x){};
+      int h,x;
+    };
+    struct que{
+      int tail;
+      vector<node> a;
+      void clear(int size){
+        tail = 0;
+        a.reserve(size);
+      }
+      bool empty(){
+        return tail==0;
+      }
+      node get_tail() {
+        if (tail>0)
+        return a[tail-1];
+        else return node(0,0);
+      }
+      void del_tail(){
+        tail--;
+      }
+      void insert_back(node x){
+        a[tail++]=x;
+      }
+    }q;
+    int trap(vector<int>& height) {
+        int n = height.size();
+        q.clear(n);
+        long long ans =0;
+        for (int i=0;i<n;i++){
+            int last_top = q.get_tail().h;
+            while(!q.empty()){
+     //         cout<<i<<' '<<q.get_tail().h<<' '<<q.get_tail().x<<' '<<ans<<endl;
+              ans += abs(min(q.get_tail().h,height[i]) -last_top)*(i-q.get_tail().x-1);
+              if (q.get_tail().h<=height[i]){
+                last_top = q.get_tail().h;
+                q.del_tail();
+              }
+              else break;
+            }
+            q.insert_back(node(height[i],i));
+        }
+        return ans;
+    }
+};
+
+//runtime:8 ms
+//memory:7.1 MB
