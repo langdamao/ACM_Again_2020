@@ -25,7 +25,27 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        
+        ListNode* ret = new ListNode(0);
+        ListNode* rret= ret;
+        int wei=0;
+        while(l1!=NULL || l2!=NULL){
+          int tmp=wei;
+          if (l1!=NULL) {
+            tmp+=l1->val;
+            l1 = l1->next;
+          }
+          if (l2!=NULL) {
+            tmp+=l2->val;
+            l2 = l2->next;
+          }
+          ret->val = tmp%10;
+          wei = tmp/10;
+          if (l1!=NULL || l2!=NULL || wei!=0) {
+            ret->next = new ListNode(wei);
+            ret = ret -> next;
+          }
+        }
+        return rret;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
