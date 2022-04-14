@@ -5,5 +5,8 @@ test/*
 **/.swp 
 **/.swo 
 **/*.json
+**/.idea
 leetcode/leetcode/editor/cn/doc/*.md
+leetcode/leetcode/editor/cn/doc/**/*.md
+leetcode/leetcode/editor/cn/doc/**/*.txt
 tmp
