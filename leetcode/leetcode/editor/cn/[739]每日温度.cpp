@@ -11,50 +11,76 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 public:
+//    struct node {
+//      node(int _i,int _x):i(_i),x(_x){};
+//      int x,i;
+//    };
+//    struct queue {
+//      int tail =0;
+//      vector<node> vec;
+//      void clear(){
+//        tail=0;
+//        vec.clear();
+//      }
+//      int size(){
+//        return tail;
+//      }
+//      void push_to(node x,int i){
+//        if (i<vec.size()) vec[i] = x;
+//        else vec.push_back(x);
+//      }
+//      void push_back(node x){
+//        while(tail>0 && vec[tail-1].x<=x.x){
+//          tail--;
+//        }
+//        push_to(x,tail);
+//        tail++;
+//      }
+//      node get(int x){
+//        if (x>=0) return vec[x];
+//        else return vec[tail+x];
+//      }
+//    };
+//    vector<int> dailyTemperatures(vector<int>& T) {
+//      vector<int> ret;
+//      int n = T.size();
+//      ret.reserve(n);
+//      for (int i=0;i<n;i++) ret.push_back(0);
+//      queue q;
+//      q.clear();
+//      for (int i=n-1;i>=0;i--){
+//         q.push_back(node(i,T[i]));
+//         if (q.size()>=2) {
+//           ret[i] = q.get(-2).i-i;
+//         }
+//      }
+//      return ret;
+//    }
+/* 单调队列 stack实现 + node
     struct node {
-      node(int _i,int _x):i(_i),x(_x){};
-      int x,i;
+        int x,i;
+        node(int _x=0, int _i=0): x(_x),i(_i) {}
     };
-    struct queue {
-      int tail =0;
-      vector<node> vec;
-      void clear(){
-        tail=0;
-        vec.clear();
-      }
-      int size(){
-        return tail;
-      }
-      void push_to(node x,int i){
-        if (i<vec.size()) vec[i] = x;
-        else vec.push_back(x);
-      }
-      void push_back(node x){
-        while(tail>0 && vec[tail-1].x<=x.x){
-          tail--;
-        }
-        push_to(x,tail);
-        tail++;
-      }
-      node get(int x){
-        if (x>=0) return vec[x];
-        else return vec[tail+x];
-      }
-    };
-    vector<int> dailyTemperatures(vector<int>& T) {
-      vector<int> ret;
-      int n = T.size();
-      ret.reserve(n);
-      for (int i=0;i<n;i++) ret.push_back(0);
-      queue q;
-      q.clear();
-      for (int i=n-1;i>=0;i--){
-         q.push_back(node(i,T[i]));
-         if (q.size()>=2) {
-           ret[i] = q.get(-2).i-i;
+     vector<int> dailyTemperatures(vector<int>& T) {
+         vector<int> ret(T.size(), 0);
+         stack<node> st;
+         for (int i = T.size()-1; i>=0; i--){
+             while(!st.empty() && st.top().x <= T[i]) st.pop();
+             if (!st.empty()) ret[i]=st.top().i-i;
+             st.push(node(T[i],i));
          }
-      }
-      return ret;
+         return ret;
+     }
+*/
+    vector<int> dailyTemperatures(vector<int>& T) {
+        vector<int> ret(T.size(), 0);
+        stack<int> st;
+        for (int i=T.size()-1; i>=0; i--){
+            while(!st.empty() && T[st.top()]<=T[i]) st.pop();
+            ret[i] = st.empty()?0:st.top()-i;
+            st.push(i);
+        }
+        return ret;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)

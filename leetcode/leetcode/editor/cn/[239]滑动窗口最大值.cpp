@@ -41,54 +41,67 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 public:
-    struct node {
-      int wei;int x;
-    };
-    struct que{
-       vector<node> v;
-       int tail = 0;
-       int head= 0;
-       void clear(){
-         tail=0;
-         head = 0;
-       }
-       void insert(node tmp){
-//         cout<<tail<<endl;
-         if (v.size() >tail){
-           v[tail] = tmp;
-         }
-         else v.push_back(tmp);
-         tail++;
-       }
-       void push_back(int wei,int x){
-         node tmp ;tmp.wei=wei;tmp.x=x;
-         while(tail>head && v[tail-1].x<=tmp.x){
-           tail--;
-         }
-         insert(tmp);
-       }
-       node top(int x){
-         while(head<tail && v[head].wei<x){
-//           cout<<head<<' '<<v[head].wei<<' '<<v[head].x<<endl;
-           head++;
-         }
-         return v[head];
-       }
-
-    }q;
+//    struct node {
+//      int wei;int x;
+//    };
+//    struct que{
+//       vector<node> v;
+//       int tail = 0;
+//       int head= 0;
+//       void clear(){
+//         tail=0;
+//         head = 0;
+//       }
+//       void insert(node tmp){
+////         cout<<tail<<endl;
+//         if (v.size() >tail){
+//           v[tail] = tmp;
+//         }
+//         else v.push_back(tmp);
+//         tail++;
+//       }
+//       void push_back(int wei,int x){
+//         node tmp ;tmp.wei=wei;tmp.x=x;
+//         while(tail>head && v[tail-1].x<=tmp.x){
+//           tail--;
+//         }
+//         insert(tmp);
+//       }
+//       node top(int x){
+//         while(head<tail && v[head].wei<x){
+////           cout<<head<<' '<<v[head].wei<<' '<<v[head].x<<endl;
+//           head++;
+//         }
+//         return v[head];
+//       }
+//
+//    }q;
+//    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+//      q.clear();
+//      for (int i=0;i<k-1;i++){
+//        q.push_back(i,nums[i]);
+//      }
+//      vector<int> ret;
+//      int n= nums.size();
+//      for (int i=k-1;i<n;i++){
+////        cout<<i<<' '<<nums[i]<<endl;
+//        q.push_back(i,nums[i]);
+//        ret.push_back(q.top(i-k+1).x);
+//      }
+//      return ret;
+//    }
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-      q.clear();
-      for (int i=0;i<k-1;i++){
-        q.push_back(i,nums[i]);
-      }
-      vector<int> ret;
-      int n= nums.size();
-      for (int i=k-1;i<n;i++){
-//        cout<<i<<' '<<nums[i]<<endl;
-        q.push_back(i,nums[i]);
-        ret.push_back(q.top(i-k+1).x);
-      }
-      return ret;
+       deque<int> st;
+       vector<int> ret(nums.size()-k+1);
+       for (int i=0; i<nums.size(); i++){
+           while(!st.empty() && nums[st.back()] <= nums[i]) st.pop_back();
+           while(!st.empty() && i-st.front() >= k) st.pop_front();
+           st.push_back(i);
+           if(i >= k-1){
+               ret[i-k+1] = nums[st.front()];
+           }
+       }
+       return ret;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
