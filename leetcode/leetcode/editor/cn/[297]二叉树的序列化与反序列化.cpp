@@ -37,13 +37,70 @@ class Codec {
 public:
 
     // Encodes a tree to a single string.
+    string work (TreeNode* root){
+        if (!root) return ",";
+        return to_string(root->val).append(",").append(work(root->left)).append(work(root->right));
+    }
     string serialize(TreeNode* root) {
-        
+//        cout<<work(root)<<endl;
+       return work(root);
     }
 
     // Decodes your encoded data to tree.
+    int getInt(string data, int& index){
+        int head = index;
+        while(data[index]!=','){
+            index++;
+        }
+        int ret = atoi(data.substr(head,index-head).c_str());
+        index ++;
+        return ret;
+    }
+    bool isNumber(string data, int index){
+        if (data[index]!=',') return true;
+        return false;
+    }
+    TreeNode* workBack(string data, int& index){
+        if (data[index]==',') {index++;return nullptr;}
+        TreeNode * node = new TreeNode(getInt(data,index));
+        node -> left = workBack(data, index);
+        node -> right = workBack(data,index);
+        return node;
+    }
     TreeNode* deserialize(string data) {
-        
+        if (data.length() == 1 && data[0]==',') return nullptr;
+        int index =0;
+        int n = data.length();
+        return workBack(data,index);
+        TreeNode * root = new TreeNode(getInt(data,index));
+        stack<TreeNode*> st;
+        TreeNode * now = root;
+        while(index<n){
+            if (isNumber(data, index)){
+                TreeNode * tmp = new TreeNode(getInt(data,index));
+                if (now) {
+                    now->left = tmp;
+                    st.push(now);
+                }
+                else{
+                    now = st.top();
+                    st.pop();
+                    now -> right = tmp;
+                }
+                now = tmp;
+            }
+            else {
+                index+=1;
+                if (now){
+                    st.push(now);
+                }
+                else {
+                    st.pop();
+                }
+                now = nullptr;
+            }
+        }
+        return root;
     }
 };
 

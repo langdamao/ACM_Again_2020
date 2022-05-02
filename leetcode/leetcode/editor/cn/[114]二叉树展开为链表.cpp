@@ -40,8 +40,23 @@
  */
 class Solution {
 public:
+    TreeNode* dfs(TreeNode* root){
+        if (!root) return root;
+        if (!root->left && !root->right) return root;
+        TreeNode* left = dfs(root->left);
+        TreeNode* right = root->right;
+        if (left) {
+            root->right = root->left;
+            root->left = nullptr;
+            left->right = right;
+        }
+        right = dfs(right);
+        if (right) return right;
+        else if (left) return left;
+        else return root;
+    }
     void flatten(TreeNode* root) {
-        
+        dfs(root);
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
