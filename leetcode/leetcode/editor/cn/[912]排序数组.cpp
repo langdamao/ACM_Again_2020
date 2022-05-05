@@ -58,8 +58,27 @@ public:
             }
         }
     }
+    void QuickSort(vector<int>&nums, int l,int r){
+        if (l>=r) return ;
+        //随机一个
+        swap(nums[l],nums[rand()%(r-l+1)+l]);
+        int flag = nums[l];
+        int i = l;
+        int j = r;
+        while(i<=j){
+            while(i<r && nums[i]<=flag) i++;
+            while(j>l && nums[j]>flag) j--;
+            if (i>=j) break;
+            swap(nums[i],nums[j]);
+        }
+        swap(nums[l],nums[j]);
+        QuickSort(nums,l,j-1);
+        QuickSort(nums,j+1,r);
+    }
     vector<int> sortArray(vector<int>& nums) {
-       Mergesort(nums, 0, nums.size());
+//       Mergesort(nums, 0, nums.size());
+       srand(time(0));
+       QuickSort(nums,0,nums.size()-1);
        return nums;
     }
 };

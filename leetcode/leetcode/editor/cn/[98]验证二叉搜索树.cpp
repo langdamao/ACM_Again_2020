@@ -44,8 +44,15 @@
  */
 class Solution {
 public:
+    bool isValid(TreeNode* root, TreeNode* min, TreeNode* max){
+        if (!root) return true;
+        if (min && root->val <= min->val) return false;
+        if (max && root->val >= max->val) return false;
+        return isValid(root->left, min, root) && isValid(root->right,root,max);
+
+    }
     bool isValidBST(TreeNode* root) {
-        
+        return isValid(root, nullptr, nullptr);
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
