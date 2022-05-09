@@ -26,16 +26,15 @@ class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
       int n = coins.size();
-      vector<int> dp;
-      dp.reserve(amount+1);
-      for (int i=0;i<=amount;i++) dp.push_back(amount*2+5);
+      const int INT_MAX = amount*2+5;
+      vector<int> dp(amount+1, INT_MAX);
       dp[0]=0;
         for (int i=0;i<n;i++){
           for (int j=coins[i];j<=amount;j++){
               dp[j] = min(dp[j], dp[j - coins[i]] + 1);
           }
         }
-        return dp[amount]>=amount*2+5? -1:dp[amount];
+        return dp[amount]>=INT_MAX? -1:dp[amount];
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
