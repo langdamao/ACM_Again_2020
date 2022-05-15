@@ -62,7 +62,31 @@
 class Solution {
 public:
     bool isMatch(string s, string p) {
-        
+        int ls = s.length();
+        int lp = p.length();
+        vector<vector<bool>> dp(2,vector<bool>(lp+1,false));
+        dp[0][0]=true;
+        for (int j=2;j<=lp;j++){
+            if (p[j-1]=='*') dp[0][j] = dp[0][j-2];
+        }
+        for (int i=1;i<=ls;i++){
+            int t = i&1;
+            dp[t][0] = false;
+            for (int j=1;j<=lp;j++){
+                char chP= p[j-1];
+                if (chP=='*'){
+                    dp[t][j] = ((dp[1^t][j] || dp[1^t][j-1]) && j!=1 && (s[i-1]==p[j-2] || p[j-2]=='.')) || (j!=1 && dp[t][j-2]);
+                }
+                else if (chP=='.'){
+                   dp[t][j] = dp[1^t][j-1];
+                }
+                else {
+                    dp[t][j] = dp[1^t][j-1] && chP==s[i-1];
+                }
+//                cout<<i<<' '<<j<<' '<<dp[t][j]<<endl;
+            }
+        }
+        return dp[ls&1][lp];
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)

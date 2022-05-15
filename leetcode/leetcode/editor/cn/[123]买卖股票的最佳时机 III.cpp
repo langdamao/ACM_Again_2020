@@ -37,21 +37,18 @@ public:
       vector<int> left = vector<int>(n,0);
       vector<int> right = vector<int>(n,0);
       int minnow =prices[0];
-        for (int i=0;i<n;i++){
-          left[i] = prices[i]-minnow;
+        for (int i=1;i<n;i++){
+          left[i] = max(left[i-1],prices[i]-minnow);
           minnow = min(minnow,prices[i]);
         }
       int maxnow = prices[n-1];
-        for (int i=n-1;i>=0;i--){
-          right[i] = maxnow-prices[i];
+        for (int i=n-2;i>=0;i--){
+          right[i] = max(right[i+1],maxnow-prices[i]);
           maxnow = max(maxnow,prices[i]);
         }
-        maxnow = max(left[0],0);
-        int ans=maxnow;
+        int ans=left[0]+right[0];
         for (int i=1;i<n;i++){
-          ans = max(ans,maxnow+right[i]);
-          ans = max(left[i],ans);
-          maxnow = max(maxnow,left[i]);
+            ans =max(ans,left[i]+right[i]);
         }
         return ans;
     }
