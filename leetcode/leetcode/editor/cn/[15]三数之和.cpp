@@ -21,8 +21,34 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 public:
+    vector<vector<int>> ret;
+    int n;
+    int next(int x,int k,int delta, vector<int>& nums){
+        while (x>=0 && x<n &&nums[x]==k) x+=delta;
+        return x;
+    }
+    void find(int begin,int end, int k, vector<int>& nums){
+        int i=begin;
+        int j = end-1;
+        while(i<j && i<end && j>=begin){
+            int x = nums[i]+nums[j];
+            if (x==k) {
+                ret.push_back({-k,nums[i],nums[j]});
+                i = next(i,nums[i],1,nums);
+                j = next(j,nums[j],-1,nums);
+            }
+            else if (x<k) i = next(i,nums[i],1,nums);
+            else j = next(j,nums[j],-1,nums);
+        }
+    }
     vector<vector<int>> threeSum(vector<int>& nums) {
-
+          n = nums.size();
+          sort(nums.begin(),nums.end());
+          for (int i=0;i<n;i++){
+              find(i+1,n,-nums[i], nums);
+              while(i+1<n&&nums[i+1]==nums[i]) i++;
+          }
+          return ret;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)

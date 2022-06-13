@@ -44,8 +44,16 @@
  */
 class Solution {
 public:
+    //first 不带它， second 带它
+    pair<int,int> dfs(TreeNode* root){
+        if (!root) return make_pair(0,0);
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
+        return make_pair(max(left.first,left.second)+max(right.first,right.second), root->val+left.first+right.first);
+    }
     int rob(TreeNode* root) {
-
+        pair<int,int> ans = dfs(root);
+        return max(ans.first,ans.second);
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)

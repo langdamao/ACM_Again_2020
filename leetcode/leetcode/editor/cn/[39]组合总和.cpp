@@ -45,8 +45,27 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 public:
+    vector<vector<int>> ret;
+    void dfs(int step, int sum, vector<int>& now, vector<int>& candidates,int target){
+        if (sum==target){
+            ret.push_back(now);
+            return;
+        }
+        if (step>=candidates.size()) return ;
+        if (sum>target) return ;
+        int num=0;
+        while(sum<=target){
+            dfs(step+1,sum,now,candidates,target);
+            sum+=candidates[step];
+            now.push_back(candidates[step]);
+            num++;
+        }
+        for (int i=0;i<num;i++) now.pop_back();
+    }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-
+        vector<int> now;
+        dfs(0,0, now, candidates, target);
+        return ret;
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
